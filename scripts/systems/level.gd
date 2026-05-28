@@ -80,15 +80,23 @@ func carve(cell: Vector2i) -> void:
 	_tunnel[cell] = true
 	_update_tilemap_cell(cell)
 	_astar_needs_rebuild = true
-
-	# Collect pickup if present
 	if _pickups.has(cell):
 		_pickups.erase(cell)
-		# The actual value depends on what was there — handled by spawn system
 		nugget_collected.emit(cell, _get_pickup_value(cell))
-
-	# Check boulder supports in this column
 	_check_boulder_column(cell.x)
+
+
+func _check_boulder_column(col: int) -> void:
+	for y in range(GRID_OFFSET.y + _balance.GRID_ROWS - 1, GRID_OFFSET.y - 1, -1):
+		var cell := Vector2i(col, y)
+		if _boulder_cells.has(cell):
+			var b = _boulder_cells[cell]
+			if b.current_state != 0:
+				continue
+			var below := cell + Vector2i.DOWN
+			var supported := is_solid(below) or (below.y < GRID_OFFSET.y) or _boulder_cells.has(below)
+			if not supported:
+				b.trigger_fall()
 
 
 func cell_at(world_pos: Vector2) -> Vector2i:
@@ -193,6 +201,7 @@ func _update_tilemap_cell(cell: Vector2i) -> void:
 		return
 	var tunnel_id := _tile_for_layer(-1)
 	earth_tilemap.set_cell(cell, 0, tunnel_id)
+	earth_tilemap.queue_redraw()
 
 
 func _tile_for_layer(variant: int) -> Vector2i:
