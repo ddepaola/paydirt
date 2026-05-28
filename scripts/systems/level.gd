@@ -179,8 +179,8 @@ func _setup_grid() -> void:
 func _populate_earth_tilemap() -> void:
 	if not earth_tilemap:
 		return
-	var solid_id := _tile_for_layer(0)  # base solid tile per layer
-	var tunnel_id := _tile_for_layer(-1)  # tunnel/empty tile
+	var solid_id := _tile_for_layer(0)
+	var tunnel_id := _tile_for_layer(-1)
 	for x in range(_balance.GRID_COLS):
 		for y in range(GRID_OFFSET.y, GRID_OFFSET.y + _balance.GRID_ROWS):
 			var cell := Vector2i(x, y)

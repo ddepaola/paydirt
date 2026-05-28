@@ -77,7 +77,7 @@ func start_level(lvl_idx: int) -> void:
 func _create_earth_tilemap(level) -> void:
 	var tm: TileMapLayer = TileMapLayer.new()
 	tm.name = "EarthTileMap"
-	tm.position = Vector2(0, _grid_offset.y * _balance.TILE_SIZE)
+	# No position offset — cell coordinates match grid coordinates directly
 
 	var ts: TileSet = TileSet.new()
 	ts.tile_size = Vector2i(_balance.TILE_SIZE, _balance.TILE_SIZE)
@@ -120,6 +120,7 @@ func _spawn_player(level) -> void:
 	p.global_position = Vector2((start_cell.x + 0.5) * _balance.TILE_SIZE,
 		(start_cell.y + 0.5) * _balance.TILE_SIZE)
 	p.level_ref = level
+	p._balance = _balance
 
 	var sprite: Sprite2D = Sprite2D.new()
 	sprite.name = "Sprite"
