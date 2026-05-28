@@ -1,5 +1,4 @@
 # Main.gd — Top-level scene router.
-# Manages Title → Game → GameOver flow.
 
 extends Node
 

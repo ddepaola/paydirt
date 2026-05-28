@@ -37,7 +37,6 @@ func _load_balance():
 
 
 func start_level(lvl_idx: int) -> void:
-	print("[Game] start_level %d" % lvl_idx)
 	if current_level:
 		current_level.queue_free()
 
@@ -72,10 +71,10 @@ func start_level(lvl_idx: int) -> void:
 	level._setup_grid()
 	_spawn_player(level)
 	_spawn_critters(level, cfg)
-	_spawn_boulders(level, cfg)
+	# Boulders disabled — tweens may cause freeze on llvmpipe/WSL
+	# _spawn_boulders(level, cfg)
 	_spawn_pickups(level, cfg)
 	_show_level_intro(lvl_idx, cfg)
-	print("[Game] Level %d ready" % (lvl_idx + 1))
 
 
 func _create_earth_tilemap(level) -> void:
@@ -182,7 +181,6 @@ func _spawn_player(level) -> void:
 	level.entities_node.add_child(p)
 	level.register_player(p)
 	player = p
-	print("[Game] Player spawned at %s" % str(start_cell))
 
 
 func _spawn_critters(level, cfg) -> void:
@@ -201,7 +199,7 @@ func _spawn_critters(level, cfg) -> void:
 
 	while spawned < cc and idx < tunnel_cells.size():
 		var cell: Vector2i = tunnel_cells[idx]; idx += 1
-		if cell.distance_squared_to(player_cell) < 16:
+		if cell.distance_squared_to(player_cell) < 4:
 			continue
 
 		var critter
@@ -219,7 +217,6 @@ func _spawn_critters(level, cfg) -> void:
 		level.entities_node.add_child(critter)
 		level.register_critter(critter, cell)
 		spawned += 1
-	print("[Game] %d critters spawned" % spawned)
 
 
 func _spawn_boulders(level, cfg) -> void:
@@ -245,7 +242,6 @@ func _spawn_boulders(level, cfg) -> void:
 		level.entities_node.add_child(b)
 		level.register_boulder(b, cell)
 		placed += 1
-	print("[Game] %d boulders placed" % placed)
 
 
 func _spawn_pickups(level, cfg) -> void:
@@ -262,7 +258,6 @@ func _spawn_pickups(level, cfg) -> void:
 	if cfg.has_mother_lode:
 		var lc: Vector2i = Vector2i(_balance.GRID_COLS / 2, _grid_offset.y + _balance.GRID_ROWS - 3)
 		level._pickups[lc] = "mother_lode"
-	print("[Game] %d pickups scattered" % placed)
 
 
 func _show_level_intro(lvl_idx: int, cfg) -> void:
