@@ -59,7 +59,7 @@ func _update_flame(delta: float) -> void:
 
 
 func _aligned_with_player() -> bool:
-	var pc := level_ref.cell_at(player_ref.global_position)
+	var pc: Vector2i = level_ref.cell_at(player_ref.global_position)
 	# Same row or same column
 	if pc.x != current_cell.x and pc.y != current_cell.y:
 		return false
@@ -92,7 +92,7 @@ func _start_flame() -> void:
 
 func _spawn_flame() -> void:
 	# Check if player is in the flame column
-	var pc := level_ref.cell_at(player_ref.global_position)
+	var pc: Vector2i = level_ref.cell_at(player_ref.global_position)
 	var step := current_cell + flame_dir
 	for _i in range(_balance.FLAME_RANGE):
 		if not level_ref.is_in_bounds(step):
@@ -105,8 +105,8 @@ func _spawn_flame() -> void:
 		step += flame_dir
 
 	# Visual FX: flame column
-	var fx_start := level_ref.world_of(current_cell + flame_dir)
-	var fx_end := level_ref.world_of(step - flame_dir)
+	var fx_start: Vector2 = level_ref.world_of(current_cell + flame_dir)
+	var fx_end: Vector2 = level_ref.world_of(step - flame_dir)
 	_draw_flame_fx(fx_start, fx_end)
 	Audio.play_sfx("flame")
 

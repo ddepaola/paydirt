@@ -37,17 +37,9 @@ func start_level(lvl_idx: int) -> void:
 	var LevelClass = load(SCRIPT_LEVEL)
 	var level = LevelClass.new()
 	level.name = "Level"
-	add_child(level)
-	current_level = level
 
-	if level.has_signal("level_cleared"):
-		level.level_cleared.connect(_on_level_cleared)
-	if level.has_signal("player_died"):
-		level.player_died.connect(_on_player_died)
-
-	var cfg = GameState.get_level_config(lvl_idx)
-	level._balance = _balance
-	level._config = cfg
+	# Build all children BEFORE adding to tree (so _ready() finds them)
+	_create_earth_tilemap(level)
 
 	var entities: Node2D = Node2D.new()
 	entities.name = "Entities"
@@ -59,7 +51,18 @@ func start_level(lvl_idx: int) -> void:
 	level.add_child(fx)
 	level.fx_node = fx
 
-	_create_earth_tilemap(level)
+	# Now add to tree — _ready() will find EarthTileMap, Entities, FX
+	add_child(level)
+	current_level = level
+
+	if level.has_signal("level_cleared"):
+		level.level_cleared.connect(_on_level_cleared)
+	if level.has_signal("player_died"):
+		level.player_died.connect(_on_player_died)
+
+	var cfg = GameState.get_level_config(lvl_idx)
+	level._balance = _balance
+	level._config = cfg
 	level._setup_grid()
 	_spawn_player(level)
 	_spawn_critters(level, cfg)
@@ -91,7 +94,6 @@ func _create_earth_tilemap(level) -> void:
 	var atlas: TileSetAtlasSource = TileSetAtlasSource.new()
 	atlas.texture = tex
 	atlas.texture_region_size = Vector2i(_balance.TILE_SIZE, _balance.TILE_SIZE)
-	atlas.tile_size = Vector2i(_balance.TILE_SIZE, _balance.TILE_SIZE)
 	for col_i: int in 5:
 		atlas.create_tile(Vector2i(col_i, 0))
 	ts.add_source(atlas)

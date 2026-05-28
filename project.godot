@@ -1,7 +1,10 @@
 ; Engine configuration file.
 ; It's best edited using the editor UI and not directly,
 ; since the parameters that go here are not all obvious.
-; Unrelated: Godot expects this header line exactly.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
 
 config_version=5
 
@@ -19,24 +22,16 @@ GameState="*res://autoload/game_state.gd"
 Leaderboard="*res://autoload/leaderboard.gd"
 Audio="*res://autoload/audio.gd"
 
-[display]
-
-window/size/viewport_width=480
-window/size/viewport_height=360
-window/size/mode=0
-window/stretch/mode="canvas_items"
-window/stretch/aspect="keep"
-
-[rendering]
-
-textures/canvas_textures/default_texture_filter=0
-renderer/rendering_method="gl_compatibility"
-anti_aliasing/quality/msaa_2d=0
-
 [debug]
 
 gdscript/warnings/enable=false
 gdscript/warnings/treat_warnings_as_errors=false
+
+[display]
+
+window/size/viewport_width=480
+window/size/viewport_height=360
+window/stretch/mode="canvas_items"
 
 [input]
 
@@ -70,3 +65,8 @@ fire={
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":74,"key_label":0,"unicode":106,"location":0,"echo":false,"script":null)
 ]
 }
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0
+renderer/rendering_method="gl_compatibility"

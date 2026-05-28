@@ -16,7 +16,7 @@ var facing: Dir = Dir.DOWN
 var current_state: State = State.IDLE
 var target_cell: Vector2i
 var target_world: Vector2
-var level_ref: Level
+var level_ref  # (Level — untyped)
 
 # ---- pump state ----
 var pumped_critter = null
@@ -25,7 +25,7 @@ var deflate_timer: float = 0.0
 var pump_input: bool = false
 
 # ---- cached balance ----
-var _balance: Balance
+var _balance  # (Balance — untyped)
 var _move_speed: float
 var _dig_time: float
 var _blast_range: int
@@ -78,7 +78,7 @@ func _handle_movement() -> void:
 		input_dir.y = 0
 
 	# Only turn at cell centers
-	var current_cell := level_ref.cell_at(global_position)
+	var current_cell: Vector2i = level_ref.cell_at(global_position)
 	var at_center := global_position.distance_to(level_ref.world_of(current_cell)) < 2.0
 
 	if not at_center and current_state != State.MOVING:
@@ -88,7 +88,7 @@ func _handle_movement() -> void:
 		var next_cell := current_cell + input_dir
 		if not level_ref.is_in_bounds(next_cell):
 			current_state = State.IDLE
-			velocity = Vector2.Zero
+			velocity = Vector2.ZERO
 			return
 
 		if level_ref.is_solid(next_cell):
@@ -145,7 +145,7 @@ func _try_blast() -> void:
 
 func _spawn_blast() -> void:
 	var dir_vec := _vec_from_dir(facing)
-	var start_cell := level_ref.cell_at(global_position)
+	var start_cell: Vector2i = level_ref.cell_at(global_position)
 
 	for i in range(1, _blast_range + 1):
 		var check_cell := start_cell + dir_vec * i
@@ -155,7 +155,7 @@ func _spawn_blast() -> void:
 			break  # blast stops at solid earth
 
 		# Check for critter in this tunnel cell
-		var hit := level_ref.get_critter_at(check_cell)
+		var hit = level_ref.get_critter_at(check_cell)
 		if hit:
 			_attach_pump(hit, check_cell)
 			return

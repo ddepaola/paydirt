@@ -19,8 +19,11 @@ func _ready() -> void:
 
 	# Connect signals
 	GameState.game_over.connect(_on_game_over)
+	title_screen.play_pressed.connect(_start_game)
+	game_over_screen.restart_pressed.connect(_start_game)
 
 	# Start at title
+	print("[Main] _ready")
 	_show_title()
 
 

@@ -46,13 +46,13 @@ func _ready() -> void:
 	_config = GameState.get_level_config(GameState.level_index)
 	_cur_layer = _config.layer as LayerIdx
 
-	# Ensure child nodes exist or create them
+	# Use programmatically-set refs if available, otherwise try $NodeName
 	if not earth_tilemap:
-		earth_tilemap = $EarthTileMap
+		earth_tilemap = get_node_or_null("EarthTileMap")
 	if not entities_node:
-		entities_node = $Entities
+		entities_node = get_node_or_null("Entities")
 	if not fx_node:
-		fx_node = $FX
+		fx_node = get_node_or_null("FX")
 
 	center_cell = Vector2i(_balance.GRID_COLS / 2, GRID_OFFSET.y + _balance.GRID_ROWS / 2)
 	_setup_grid()

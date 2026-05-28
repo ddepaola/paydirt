@@ -54,14 +54,14 @@ func _continue_fall() -> void:
 		return
 
 	# Crush anything in this cell (critter or player)
-	var critter := level_ref.get_critter_at(cell_below)
+	var critter = level_ref.get_critter_at(cell_below)
 	if critter:
 		critter.on_crushed()
 		_bump_chain_bonus()
 
 	# Check player
 	if level_ref.player_ref:
-		var player_cell := level_ref.cell_at(level_ref.player_ref.global_position)
+		var player_cell: Vector2i = level_ref.cell_at(level_ref.player_ref.global_position)
 		if player_cell == cell_below:
 			level_ref.player_ref.die()
 			_shatter()
@@ -91,7 +91,7 @@ func _shatter() -> void:
 	current_state = State.SHATTERED
 	# Check if player is in the cell we land on
 	if level_ref.player_ref:
-		var player_cell := level_ref.cell_at(level_ref.player_ref.global_position)
+		var player_cell: Vector2i = level_ref.cell_at(level_ref.player_ref.global_position)
 		if player_cell == my_cell:
 			level_ref.player_ref.die()
 
@@ -118,8 +118,8 @@ var _chain_count: int = 0
 
 func _bump_chain_bonus() -> void:
 	_chain_count += 1
-	var pts_idx := min(_chain_count - 1, _balance.BOULDER_CHAIN.size() - 1)
-	var pts := _balance.BOULDER_CHAIN[pts_idx]
+	var pts_idx: int = min(_chain_count - 1, _balance.BOULDER_CHAIN.size() - 1)
+	var pts: int = _balance.BOULDER_CHAIN[pts_idx]
 	GameState.add_score(pts)
 
 
@@ -131,6 +131,6 @@ func on_crushed() -> void:
 
 # Placeholder drawing
 func _draw() -> void:
-	var size := _balance.TILE_SIZE * 0.7
+	var size: float = _balance.TILE_SIZE * 0.7
 	draw_circle(Vector2.ZERO, size * 0.5, Color(0.35, 0.3, 0.28))
 	draw_arc(Vector2.ZERO, size * 0.5, 0, PI, 8, Color(0.45, 0.4, 0.38), 2.0)
