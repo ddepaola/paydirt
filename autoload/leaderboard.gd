@@ -7,14 +7,16 @@ extends Node
 signal scores_loaded(scores: Array)
 signal submit_done(ok: bool)
 
-var _cached_top: Array = []  # Array[Dictionary]
+var _cached_top: Array = []
 
 
 func fetch_top() -> void:
 	var http := HTTPRequest.new()
 	add_child(http)
 	http.request_completed.connect(_on_fetch_done.bind(http))
-	var err := http.request(GameState.API_BASE + "/scores")
+	http.timeout = 5.0  # Don't hang forever
+	var url := GameState.API_BASE + "/scores"
+	var err := http.request(url)
 	if err != OK:
 		scores_loaded.emit(_local_top())
 		http.queue_free()
@@ -39,6 +41,7 @@ func submit(initials: String, score: int, depth: int) -> void:
 	add_child(http)
 	var payload := JSON.stringify({"initials": initials, "score": score, "depth": depth})
 	http.request_completed.connect(_on_submit_done.bind(http))
+	http.timeout = 5.0
 	var err := http.request(GameState.API_BASE + "/scores",
 		["Content-Type: application/json"],
 		HTTPClient.METHOD_POST, payload)
@@ -61,8 +64,7 @@ func _local_save(initials: String, score: int, depth: int) -> void:
 	var entry: Dictionary = {"initials": initials, "score": score, "depth": depth}
 	_cached_top.append(entry)
 	_cached_top.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a.score > b.score)
-	if _cached_top.size() > 10:
-		_cached_top.resize(10)
+	if _cached_top.size() > 10: _cached_top.resize(10)
 	_flush_local()
 
 
@@ -71,28 +73,17 @@ func _load_local() -> void:
 		var raw: String = JavaScriptBridge.eval("localStorage.getItem('paydirt_scores')")
 		if raw and raw != "null" and raw != "":
 			var parsed: Variant = JSON.parse_string(raw)
-			if parsed is Array:
-				_cached_top.assign(parsed)
-			else:
-				_cached_top.clear()
-		else:
-			_cached_top.clear()
+			if parsed is Array: _cached_top.assign(parsed)
 	else:
 		var cfg := ConfigFile.new()
 		if cfg.load("user://paydirt_scores.cfg") == OK:
 			var data: Variant = cfg.get_value("scores", "entries", [])
-			if data is Array:
-				_cached_top.assign(data)
-			else:
-				_cached_top.clear()
-		else:
-			_cached_top.clear()
+			if data is Array: _cached_top.assign(data)
 
 
 func _flush_local() -> void:
 	if OS.has_feature("web"):
 		var json_str: String = JSON.stringify(_cached_top)
-		# Escape for JS string
 		json_str = json_str.replace("\\", "\\\\").replace("'", "\\'")
 		JavaScriptBridge.eval("localStorage.setItem('paydirt_scores', '%s')" % json_str)
 	else:

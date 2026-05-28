@@ -2,10 +2,13 @@
 # Axis-locked, cell-aligned movement. Carves into solid cells.
 # Fires water blaster. Rooted while pumping a critter.
 
-extends CharacterBody2D
+extends Node2D
 
 enum Dir { UP, DOWN, LEFT, RIGHT }
 enum State { IDLE, MOVING, DIGGING, BLASTING, PUMPING, DEAD }
+
+# Manual velocity (we don't use CharacterBody2D physics — it hangs on llvmpipe)
+var velocity: Vector2 = Vector2.ZERO
 
 # ---- node refs ----
 @onready var sprite: Sprite2D = $Sprite
@@ -47,17 +50,17 @@ func _process(delta: float) -> void:
 			_process_pump(delta)
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	match current_state:
 		State.IDLE, State.MOVING, State.DIGGING:
-			_handle_movement()
+			_handle_movement(delta)
 		State.PUMPING:
 			pass  # rooted — no movement
 
 
-func _handle_movement() -> void:
+func _handle_movement(delta: float) -> void:
 	if current_state == State.DIGGING:
-		return  # waiting for dig to complete
+		return
 
 	var input_dir := Vector2i(
 		int(Input.get_axis("move_left", "move_right")),
@@ -73,26 +76,22 @@ func _handle_movement() -> void:
 		velocity = Vector2.ZERO
 		return
 
-	# Axis-locked: prefer horizontal if both pressed
 	if input_dir.x != 0:
 		input_dir.y = 0
 
-	# Only turn at cell centers
 	var current_cell: Vector2i = level_ref.cell_at(global_position)
-	var at_center := global_position.distance_to(level_ref.world_of(current_cell)) < 2.0
+	var at_center: bool = global_position.distance_to(level_ref.world_of(current_cell)) < 2.0
 
 	if not at_center and current_state != State.MOVING:
-		# Still sliding to a center; keep going
 		pass
 	elif at_center and input_dir != Vector2i.ZERO:
-		var next_cell := current_cell + input_dir
+		var next_cell: Vector2i = current_cell + input_dir
 		if not level_ref.is_in_bounds(next_cell):
 			current_state = State.IDLE
 			velocity = Vector2.ZERO
 			return
 
 		if level_ref.is_solid(next_cell):
-			# Start digging
 			current_state = State.DIGGING
 			target_cell = next_cell
 			target_world = level_ref.world_of(next_cell)
@@ -101,7 +100,6 @@ func _handle_movement() -> void:
 			dig_timer.start(_dig_time)
 			velocity = Vector2.ZERO
 		else:
-			# Move into tunnel
 			current_state = State.MOVING
 			target_cell = next_cell
 			target_world = level_ref.world_of(next_cell)
@@ -115,17 +113,14 @@ func _handle_movement() -> void:
 			current_state = State.IDLE
 			velocity = Vector2.ZERO
 		else:
-			velocity = global_position.direction_to(target_world) * _move_speed
+			global_position += velocity * delta
 	else:
 		velocity = Vector2.ZERO
-
-	move_and_slide()
 
 
 func _on_dig_complete() -> void:
 	if current_state == State.DIGGING:
 		level_ref.carve(target_cell)
-		# Move into the newly carved cell
 		current_state = State.MOVING
 		velocity = global_position.direction_to(target_world) * _move_speed
 
