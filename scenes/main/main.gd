@@ -1,6 +1,5 @@
 # Main.gd — Top-level scene router.
 # Manages Title → Game → GameOver flow.
-# Holds references to all major sub-scenes.
 
 extends Node
 
@@ -11,19 +10,15 @@ var hud: CanvasLayer
 
 
 func _ready() -> void:
-	# Cache node references
 	title_screen = $TitleScreen
 	game_screen = $Game
 	game_over_screen = $GameOverScreen
 	hud = $HUD
 
-	# Connect signals
 	GameState.game_over.connect(_on_game_over)
 	title_screen.play_pressed.connect(_start_game)
 	game_over_screen.restart_pressed.connect(_start_game)
 
-	# Start at title
-	print("[Main] _ready")
 	_show_title()
 
 
@@ -49,7 +44,3 @@ func _on_game_over() -> void:
 	hud.visible = true
 	game_over_screen.visible = true
 	game_over_screen.show_results(GameState.score, GameState.depth)
-
-
-func _on_game_over_restart() -> void:
-	_start_game()

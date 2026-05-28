@@ -33,7 +33,7 @@ var _blast_range: int
 
 func _ready() -> void:
 	_balance = GameState.get_balance()
-	_move_speed = _balance.PLAYER_MOVE_SPEED * _balance.TILE_SIZE  # px/sec
+	_move_speed = _balance.PLAYER_MOVE_SPEED * _balance.TILE_SIZE
 	_dig_time = _balance.PLAYER_DIG_TIME
 	_blast_range = _balance.BLAST_RANGE
 
