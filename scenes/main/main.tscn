@@ -1,0 +1,179 @@
+[gd_scene load_steps=8 format=3 uid="uid://paydirt_main"]
+
+[ext_resource type="Script" path="res://scenes/main/main.gd" id="1_main"]
+[ext_resource type="Script" path="res://scenes/title/title_screen.gd" id="2_title"]
+[ext_resource type="Script" path="res://scenes/game/game.gd" id="3_game"]
+[ext_resource type="Script" path="res://scenes/gameover/game_over_screen.gd" id="4_gameover"]
+[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="5_hud"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_main")
+
+[node name="TitleScreen" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_title")
+
+[node name="CenterContainer" type="CenterContainer" parent="TitleScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TitleScreen/CenterContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="BrandLabel" type="Label" parent="TitleScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Miners Warehouse presents"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 12
+
+[node name="TitleLabel" type="Label" parent="TitleScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "PAY DIRT"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(1, 0.8, 0.1, 1)
+
+[node name="LeaderboardPreview" type="VBoxContainer" parent="TitleScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="PlayButton" type="Button" parent="TitleScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "PLAY"
+theme_override_font_sizes/font_size = 18
+
+[node name="Game" type="Node2D" parent="."]
+visible = false
+script = ExtResource("3_game")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+visible = false
+script = ExtResource("5_hud")
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/MarginContainer"]
+layout_mode = 2
+
+[node name="TopRow" type="HBoxContainer" parent="HUD/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ScoreLabel" type="Label" parent="HUD/MarginContainer/VBoxContainer/TopRow"]
+layout_mode = 2
+text = "SCORE 0"
+theme_override_font_sizes/font_size = 10
+
+[node name="Spacer" type="Control" parent="HUD/MarginContainer/VBoxContainer/TopRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LivesLabel" type="Label" parent="HUD/MarginContainer/VBoxContainer/TopRow"]
+layout_mode = 2
+text = "LIVES 3"
+theme_override_font_sizes/font_size = 10
+
+[node name="DepthLabel" type="Label" parent="HUD/MarginContainer/VBoxContainer/TopRow"]
+layout_mode = 2
+text = "15 FT"
+theme_override_font_sizes/font_size = 10
+
+[node name="GoldLabel" type="Label" parent="HUD/MarginContainer/VBoxContainer/TopRow"]
+layout_mode = 2
+text = "AU 0"
+theme_override_font_sizes/font_size = 10
+theme_override_colors/font_color = Color(1, 0.85, 0, 1)
+
+[node name="GameOverScreen" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_gameover")
+
+[node name="CenterContainer" type="CenterContainer" parent="GameOverScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOverScreen/CenterContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="GameOverTitle" type="Label" parent="GameOverScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "GAME OVER"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(1, 0.3, 0.3, 1)
+
+[node name="FinalScore" type="Label" parent="GameOverScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "SCORE: 0"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 14
+
+[node name="FinalDepth" type="Label" parent="GameOverScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "DEPTH: 0 FT"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 12
+
+[node name="InitialsRow" type="HBoxContainer" parent="GameOverScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="InitialsLabel" type="Label" parent="GameOverScreen/CenterContainer/VBoxContainer/InitialsRow"]
+layout_mode = 2
+text = "ENTER INITIALS:"
+theme_override_font_sizes/font_size = 10
+
+[node name="InitialsInput" type="LineEdit" parent="GameOverScreen/CenterContainer/VBoxContainer/InitialsRow"]
+layout_mode = 2
+max_length = 3
+theme_override_font_sizes/font_size = 12
+size_flags_horizontal = 0
+
+[node name="SubmitButton" type="Button" parent="GameOverScreen/CenterContainer/VBoxContainer/InitialsRow"]
+layout_mode = 2
+text = "SUBMIT"
+theme_override_font_sizes/font_size = 10
+
+[node name="LeaderboardList" type="VBoxContainer" parent="GameOverScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="CTAButton" type="Button" parent="GameOverScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Outfit your real claim: gold pans, sluices & detectors ->"
+theme_override_font_sizes/font_size = 9
+
+[node name="RestartButton" type="Button" parent="GameOverScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "PLAY AGAIN"
+theme_override_font_sizes/font_size = 14

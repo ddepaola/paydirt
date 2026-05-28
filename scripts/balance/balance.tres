@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="Balance" load_steps=2 format=3 uid="uid://paydirt_balance"]
+
+[ext_resource type="Script" path="res://scripts/balance/balance.gd" id="1_balance"]
+
+[resource]
+script = ExtResource("1_balance")
+TILE_SIZE = 24
+GRID_COLS = 20
+GRID_ROWS = 13
+HUD_ROWS = 2
+PLAYER_MOVE_SPEED = 4.0
+PLAYER_DIG_TIME = 0.18
+BLAST_RANGE = 3
+INFLATE_STAGES = 4
+INFLATE_PER_PUMP = 1
+DEFLATE_TIME = 1.2
+DEFLATE_STEP = 0.5
+CRITTER_SPEED = 3.0
+GHOST_SPEED = 1.6
+GHOST_TRIGGER = 4.0
+CRITTER_SPEED_SCALE = 0.05
+FLAME_RANGE = 3
+FLAME_WINDUP = 0.8
+FLAME_ACTIVE = 0.5
+FLAME_COOLDOWN = 2.5
+BOULDER_WOBBLE = 0.7
+BOULDER_FALL_SPEED = 10.0
+BONUS_TIMER = 25.0
+GEAR_BONUS_VALUES = Array[int]([1000, 2000, 3000, 5000])
+PACKRAT_POP_BASE = Array[int]([200, 300, 400, 500])
+TOMMYKNOCKER_POP_BASE = Array[int]([400, 600, 800, 1000])
+TOMMYKNOCKER_CRIT_MULT = 2
+BOULDER_CHAIN = Array[int]([1000, 2500, 4000, 6000, 8000, 10000, 12000, 15000])
+NUGGET_VALUE = 100
+GEM_VALUE = 500
+MOTHER_LODE_VALUE = 5000
+LEVEL_CLEAR_BONUS = 250
