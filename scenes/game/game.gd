@@ -122,23 +122,19 @@ func _spawn_player(level) -> void:
 	p.level_ref = level
 	p._balance = _balance
 
+	# Load prospector sprite texture from Gemini-gen PNG
 	var sprite: Sprite2D = Sprite2D.new()
 	sprite.name = "Sprite"
-	var simg: Image = Image.create(_balance.TILE_SIZE, _balance.TILE_SIZE, false, Image.FORMAT_RGBA8)
-	simg.fill(Color(0.15, 0.35, 0.65))
-	var head_c: Color = Color(1.0, 0.82, 0.62)
-	for yy: int in range(3, 10):
-		for xx: int in range(6, 18):
-			var px: Color = simg.get_pixel(xx, yy)
-			if px.a == 0 or px == Color(0.15, 0.35, 0.65):
-				simg.set_pixel(xx, yy, head_c)
-	for yy: int in range(1, 5):
-		for xx: int in range(2, 21):
-			var px: Color = simg.get_pixel(xx, yy)
-			if px == head_c or px.a == 0:
-				simg.set_pixel(xx, yy, Color(0.4, 0.25, 0.12))
-	simg.set_pixel(8, 6, Color.BLACK); simg.set_pixel(14, 6, Color.BLACK)
-	sprite.texture = ImageTexture.create_from_image(simg)
+	if ResourceLoader.exists("res://assets/sprites/prospector.png"):
+		var tex = load("res://assets/sprites/prospector.png")
+		sprite.texture = tex
+		# Scale 1024x1024 source down to 24x24 game size
+		sprite.scale = Vector2(_balance.TILE_SIZE / 1024.0, _balance.TILE_SIZE / 1024.0)
+	else:
+		# Fallback: placeholder colored sprite
+		var simg: Image = Image.create(_balance.TILE_SIZE, _balance.TILE_SIZE, false, Image.FORMAT_RGBA8)
+		simg.fill(Color(0.15, 0.35, 0.65))
+		sprite.texture = ImageTexture.create_from_image(simg)
 	p.add_child(sprite)
 
 	var timer: Timer = Timer.new()
