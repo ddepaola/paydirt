@@ -86,19 +86,6 @@ func carve(cell: Vector2i) -> void:
 	_check_boulder_column(cell.x)
 
 
-func _check_boulder_column(col: int) -> void:
-	for y in range(GRID_OFFSET.y + _balance.GRID_ROWS - 1, GRID_OFFSET.y - 1, -1):
-		var cell := Vector2i(col, y)
-		if _boulder_cells.has(cell):
-			var b = _boulder_cells[cell]
-			if b.current_state != 0:
-				continue
-			var below := cell + Vector2i.DOWN
-			var supported := is_solid(below) or (below.y < GRID_OFFSET.y) or _boulder_cells.has(below)
-			if not supported:
-				b.trigger_fall()
-
-
 func cell_at(world_pos: Vector2) -> Vector2i:
 	return Vector2i(
 		int(world_pos.x / _balance.TILE_SIZE),
