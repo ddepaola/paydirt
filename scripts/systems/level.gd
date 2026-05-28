@@ -200,7 +200,7 @@ func _tile_for_layer(variant: int) -> Vector2i:
 	# variant -1 = tunnel, 0- = solid earth variants
 	# In placeholder mode, we use simple colored rects via TileMapLayer
 	if variant == -1:
-		return Vector2i(0, 4)  # tunnel tile (black/dark)
+		return Vector2i(4, 0)  # tunnel tile (column 4)
 	match _cur_layer:
 		LayerIdx.TOPSOIL:
 			return Vector2i(0, 0)  # warm brown
