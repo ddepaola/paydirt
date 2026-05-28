@@ -1,0 +1,16 @@
+# --- Node ---
+node_modules/
+.env
+.env.*
+npm-debug.log*
+
+# --- Godot 4 ---
+.godot/
+
+# --- HTML5 export / build artifacts ---
+build/
+public/game/paydirt/
+
+# --- OS / editor cruft ---
+.DS_Store
+Thumbs.db
