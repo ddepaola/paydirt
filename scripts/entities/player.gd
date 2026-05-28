@@ -2,7 +2,6 @@
 # Axis-locked, cell-aligned movement. Carves into solid cells.
 # Fires water blaster. Rooted while pumping a critter.
 
-class_name Player
 extends CharacterBody2D
 
 enum Dir { UP, DOWN, LEFT, RIGHT }

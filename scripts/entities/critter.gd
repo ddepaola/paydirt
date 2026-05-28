@@ -2,7 +2,6 @@
 # State machine: PATROL → CHASE → GHOST → PUMPED → DEAD
 # Axis-locked, cell-aligned movement like the player.
 
-class_name Critter
 extends CharacterBody2D
 
 enum State { PATROL, CHASE, PUMPED, GHOST, DEAD }
@@ -16,8 +15,8 @@ var current_state: State = State.PATROL
 var target_cell: Vector2i
 var target_world: Vector2
 var current_cell: Vector2i
-var level_ref: Level
-var player_ref: Player
+var level_ref  # (Level — untyped)
+var player_ref  # (Player — untyped)
 
 # ---- ghost ----
 var ghost_timer: float = 0.0
@@ -28,7 +27,7 @@ var inflate_stage: int = 0
 var pumping_player = null
 
 # ---- cached ----
-var _balance: Balance
+var _balance  # (Balance — untyped)
 var _speed: float
 
 
@@ -58,7 +57,7 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 
 	# Update current cell
-	var new_cell := level_ref.cell_at(global_position)
+	var new_cell: Vector2i = level_ref.cell_at(global_position)
 	if new_cell != current_cell:
 		level_ref.unregister_critter_at(current_cell)
 		current_cell = new_cell
@@ -93,7 +92,7 @@ func _update_patrol(delta: float) -> void:
 
 		if neighbors.size() > 0:
 			# Weighted: prefer cells closer to player
-			var player_cell := level_ref.cell_at(player_ref.global_position)
+			var player_cell: Vector2i = level_ref.cell_at(player_ref.global_position)
 			neighbors.sort_custom(func(a, b):
 				return a.distance_squared_to(player_cell) < b.distance_squared_to(player_cell))
 			# 70% chance pick best, 30% random
@@ -108,7 +107,7 @@ func _update_patrol(delta: float) -> void:
 
 
 func _update_chase(delta: float) -> void:
-	var player_cell := level_ref.cell_at(player_ref.global_position)
+	var player_cell: Vector2i = level_ref.cell_at(player_ref.global_position)
 
 	# Check if ghost should trigger
 	if not _has_tunnel_path(current_cell, player_cell):
@@ -193,7 +192,7 @@ func _at_cell_center() -> bool:
 
 func _can_see_player() -> bool:
 	# Line-of-sight through tunnels only
-	var player_cell := level_ref.cell_at(player_ref.global_position)
+	var player_cell: Vector2i = level_ref.cell_at(player_ref.global_position)
 	if player_cell.x == current_cell.x:
 		var step := 1 if player_cell.y > current_cell.y else -1
 		for y in range(current_cell.y + step, player_cell.y, step):
@@ -214,8 +213,8 @@ func _has_tunnel_path(from: Vector2i, to: Vector2i) -> bool:
 
 
 func _follow_astar_to(target: Vector2i) -> void:
-	var astar := level_ref.get_astar()
-	var path := astar.get_id_path(current_cell, target)
+	var astar: AStarGrid2D = level_ref.get_astar()
+	var path: PackedVector2Array = astar.get_id_path(current_cell, target)
 	if path.size() >= 2:
 		target_cell = path[1]  # next step
 		target_world = level_ref.world_of(target_cell)

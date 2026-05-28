@@ -1,10 +1,9 @@
 # Tommyknocker.gd — Mine gremlin critter.
-# Extends Critter with a flame-breath sub-behavior.
+# Extends Critter base script with a flame-breath sub-behavior.
 # Windup (glow telegraph) → breathe (lethal flame column) → cooldown.
 # Double points if popped mid-breathe or from the flank.
 
-class_name Tommyknocker
-extends Critter
+extends "res://scripts/entities/critter.gd"
 
 enum FlameState { IDLE, WINDUP, ACTIVE, COOLDOWN }
 

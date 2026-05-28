@@ -33,7 +33,7 @@ func _on_scores_loaded(scores: Array) -> void:
 		child.queue_free()
 
 	# Show top 5
-	var shown := min(scores.size(), 5)
+	var shown: int = min(scores.size(), 5)
 	for i in range(shown):
 		var entry: Dictionary = scores[i]
 		var label := Label.new()

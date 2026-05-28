@@ -8,9 +8,9 @@ extends CharacterBody2D
 enum State { REST, WOBBLE, FALLING, SHATTERED }
 
 var current_state: State = State.REST
-var level_ref: Level
+var level_ref  # (Level — untyped)
 var my_cell: Vector2i
-var _balance: Balance
+var _balance  # (Balance — untyped)
 var _fall_speed: float
 var _wobble_time: float
 

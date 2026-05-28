@@ -1,8 +1,7 @@
 # PackRat.gd — Basic critter. Patrols tunnels, chases player, ghosts through earth.
-# Extends Critter base with no additional behaviors.
+# Extends Critter base script.
 
-class_name PackRat
-extends Critter
+extends "res://scripts/entities/critter.gd"
 
 
 func _ready() -> void:

@@ -1,7 +1,6 @@
 # Level.gd — Owns the playfield grid, TileMapLayers, and all entity spawning.
 # This is the central coordinator for a single level instance.
 
-class_name Level
 extends Node2D
 
 # ---- enums ----
@@ -38,7 +37,7 @@ var _astar_needs_rebuild: bool = true
 # ---- entity lists ----
 var critters_alive: int = 0
 var boulders_count: int = 0
-var player_ref: Player = null
+var player_ref = null  # (Player — untyped to avoid circular dep with Player class)
 var center_cell: Vector2i          # playfield geometric center, for bonuses
 
 
@@ -225,7 +224,7 @@ func _get_pickup_value(cell: Vector2i) -> int:
 	return 0
 
 
-func register_player(p: Player) -> void:
+func register_player(p) -> void:     # Player ref — untyped to break circular dep
 	player_ref = p
 
 

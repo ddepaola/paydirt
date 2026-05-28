@@ -63,7 +63,7 @@ func _on_scores_loaded(scores: Array) -> void:
 		child.queue_free()
 
 	for i in range(min(scores.size(), 10)):
-		var entry := scores[i]
+		var entry: Dictionary = scores[i]
 		var label := Label.new()
 		label.text = "%2d. %s  %d" % [i + 1, entry.get("initials", "???"), entry.get("score", 0)]
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

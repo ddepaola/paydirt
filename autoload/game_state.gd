@@ -6,7 +6,7 @@ extends Node
 
 # ---- constants ----
 const STORE_URL := "https://minerswarehouse.com/collections/prospecting"
-const API_BASE := "/api/paydirt"
+const API_BASE := "http://localhost:3000/api/paydirt"  # override in web build via JS bridge
 const MAX_LIVES := 3
 const INITIALS_LENGTH := 3
 
