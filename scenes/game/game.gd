@@ -130,6 +130,13 @@ func _spawn_player(level) -> void:
 		sprite.texture = tex
 		# Scale 1024x1024 source down to 24x24 game size
 		sprite.scale = Vector2(_balance.TILE_SIZE / 1024.0, _balance.TILE_SIZE / 1024.0)
+		# Shader to make white background transparent
+		if ResourceLoader.exists("res://assets/sprites/make_transparent.gdshader"):
+			var shd = load("res://assets/sprites/make_transparent.gdshader")
+			var mat = ShaderMaterial.new()
+			mat.shader = shd
+			mat.set_shader_parameter("threshold", 0.85)
+			sprite.material = mat
 	else:
 		# Fallback: placeholder colored sprite
 		var simg: Image = Image.create(_balance.TILE_SIZE, _balance.TILE_SIZE, false, Image.FORMAT_RGBA8)
